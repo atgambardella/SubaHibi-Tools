@@ -14,5 +14,7 @@ eng_script.xlsx
 
 BurikoConverter/Output-Build.txt
 BurikoConverter/.vs/
-BurikoConverter/obj/
-BurikoConverter/bin/
+BurikoConverter/BurikoConverter/obj/
+BurikoConverter/BurikoConverter/bin/
+
+BurikoConverter/BurikoConverter/BurikoConverter.csproj.user
