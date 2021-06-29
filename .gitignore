@@ -11,3 +11,8 @@ AE.lnk
 files.json
 translation.csv
 eng_script.xlsx
+
+BurikoConverter/Output-Build.txt
+BurikoConverter/.vs/
+BurikoConverter/obj/
+BurikoConverter/bin/

@@ -1,6 +1,6 @@
 @echo off
 setlocal ENABLEDELAYEDEXPANSION
-set "src=F:\_visual-novels\_projects\subahibi_script_tools"
+set "src=%cd%"
 
 for %%f in (%src%\raw_scripts\*) do (
 	BurikoConverter.exe -d %%f
