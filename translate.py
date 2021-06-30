@@ -9,6 +9,7 @@ import pprint
 import csv
 import json
 
+#not implemented right now
 name_dict = {
     # In VNDB Character list order
     # Protagonists
@@ -79,7 +80,7 @@ name_dict = {
     '不良達': 'Delinquents',
     '神': 'God',
     '悪しき者': 'Evil Person',
-    'オカマ': 'Faggot',
+    'オカマ': 'Homosexual',
     '練習生': 'Dojo Student',
     '渡辺': 'Watanabe',
 }
@@ -88,7 +89,8 @@ def get_fnames():
     ret = []
     for root, dir, file in os.walk('txt_scripts_jp'):
         for fname in file:
-            ret.append(os.path.join(root, fname))
+            if fname != ".gitkeep":
+                ret.append(os.path.join(root, fname))
     return ret
 
 def create_translation_csv(outname=''):
