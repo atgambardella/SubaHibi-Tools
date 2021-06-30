@@ -1,3 +1,10 @@
+AE.lnk
+eng_script.xlsx
+files.json
+jp_translation.csv
+translation.csv
+translation.xlsx
+
 encoded_scripts/*
 raw_scripts/*
 txt_scripts_en/*
@@ -11,11 +18,5 @@ txt_scripts_jp/*
 BurikoConverter/Output-Build.txt
 BurikoConverter/.vs/
 BurikoConverter/BurikoConverter/obj/
-BurikoConverter/BurikoConverter/bin/
+BurikoConverter/BurikoConverter/bin/c
 BurikoConverter/BurikoConverter/BurikoConverter.csproj.user
-
-AE.lnk
-files.json
-translation.csv
-eng_script.xlsx
-cons.csv
