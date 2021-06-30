@@ -12,7 +12,8 @@ I think it literally doesn't work right now without a file but I'll fix later.
 5. Import the csv data using Excel or some other software.
   1. Import it "as text", using UTF-8 / 65001.
   2. Set the delimiter to comma and have qualifier set as double quotes.
-  3. Save a new CSV file as "translation.csv"
+  3. Load in each row as "Text"
+  4. Save a new CSV file as "translation.csv"
 6. Modify the second row of the csv to make changes to the script
 7. Use "python translate.py --make_translation_scripts" / _ScriptGenderator.bat to convert the spreadsheet into new txt files
 8. If using _ScriptToBuriko.bat, place the txt files into /txt_scripts_en. otherwise just run BurikoConverter.exe to convert the new txt files into BGI scripts
