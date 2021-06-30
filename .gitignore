@@ -9,6 +9,7 @@ encoded_scripts/*
 raw_scripts/*
 txt_scripts_en/*
 txt_scripts_jp/*
+wonderful_everyday/
 
 !encoded_scripts/.gitkeep
 !raw_scripts/.gitkeep

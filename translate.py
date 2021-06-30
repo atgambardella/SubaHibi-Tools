@@ -106,7 +106,8 @@ def create_translation_csv(outname=''):
                 new_line = re.sub(r'^\<\d*\>', "", scriptline).rstrip()
 
                 if new_line not in files:
-                    cq = re.sub(r'[\,\'\"]', "\",\"", new_line)
+                    cq = re.sub(r'[\,]', "\",\"", new_line)
+                    cq = re.sub(r'[\"]', "\"\"\"", new_line)
                     total_lines.append((cq, line_num, fname))
 
                 line_num = line_num + 1
