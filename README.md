@@ -1,5 +1,5 @@
 # 10th Mod
-A mod for the 10th Anniversary Edition of Subarashiki Hibi that ports the Wonderful Everyday translation, along with an original translation of Knockin' on Heaven's Door.
+Tools for the 10th Anniversary Edition of Subarashiki Hibi that I'll use to port the Wonderful Everyday translation, along with an original translation of Knockin' on Heaven's Door.
 I use a modified version of Gambs' scripts for Sakura no Uta translation and also EthornellEditor libraries for decoding / encoding.
 Currently works well enough but it's mainly for personal usage.
 I think it literally doesn't work right now without a file but I'll fix later.
