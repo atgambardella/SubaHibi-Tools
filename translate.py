@@ -94,7 +94,6 @@ def get_fnames():
 def create_translation_csv(outname=''):
     total_lines = []
     fnames = get_fnames()
-    #fnames = sorted(fnames, key=sort_func)
     for fname in fnames:
         print("Reading "+str(fname)+"...")
         with open(fname, 'r', encoding='utf8') as f:
@@ -105,15 +104,12 @@ def create_translation_csv(outname=''):
                 new_line = re.sub(r'^\<\d*\>', "", scriptline).rstrip()
 
                 if new_line not in files:
-                    total_lines.append((new_line, line_num, fname))
+                    cq = re.sub(r'[\,\'\"]', "\",\"", new_line)
+                    total_lines.append((cq, line_num, fname))
 
                 line_num = line_num + 1
                 scriptline = f.readline()
-                #m = re.search(r'.*?>([^a-zA-Z].*)', scriptline)
-                #if m is not None:
-                #    jp_line = m.group(1)
-                #    if jp_line not in name_dict.keys() and '#FFFFFF' not in jp_line and '6sakura' not in jp_line:  # TODO: Fix
-                #        total_lines.append((jp_line, fname))
+
     print('Total number of lines: {}'.format(len(total_lines)))
 
     with open(outname, 'w', encoding='utf8') as csvfile:
@@ -124,93 +120,41 @@ def create_translation_csv(outname=''):
         print("Complete!")
 
 def create_translation_scripts():
+    translation = {}
     fnames = get_fnames()
-    translation = dict.fromkeys(fnames)
+    for fname in fnames:
+        fshort = os.path.split(fname)[1]
+        new_key = fshort[:len(fshort)-4]
+        translation[new_key] = {}
+
     with open('translation.csv', 'r', encoding='utf8') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
-            translation[row[4]].append((row[2], row[3]))
+            fshort = os.path.split(row[3])[1]
+            new_key = fshort[:len(fshort)-4]
+            translation[new_key][row[2]] = row[1]
 
-
-    #fnames = sorted(fnames, key=sort_func)
-    #en_files = []
-    keys = list(translation.keys())
-    key_i = 0
+    en_files = []
     for file in translation:
-        fname = keys[key_i]
-        fshort = os.path.split(fname)[1]
-        outname = os.path.join('txt_scripts_en', os.path.splitext(fshort)[0] + '.txt')
-        for line, line_num in file:
-            with open(outname, 'w', encoding='utf8') as en_f:
-                with open(fname, 'r', encoding='utf8') as jp_f:
+        fname = os.path.join('txt_scripts_jp', str(file)+".txt")
+        outname = os.path.join('txt_scripts_en', str(file)+".txt")
+        with open(outname, 'w', encoding='utf8') as en_f:
+            with open(fname, 'r', encoding='utf8') as jp_f:
                 line_num = 0
                 jp_scriptline = jp_f.readline()
                 while jp_scriptline:
-                    if jp_scriptline == line_num:
-                        line_num+=1
-                        prefix = re.match(r'\<\d*\>', jp_scriptline).group(0).rstrip()
-                        en_f.write(prefix+line)
-                        print(prefix+line)
+                    ln = str(line_num)
+                    if ln in translation[file].keys():
+                        eng_line = translation[file].pop(ln)
+                        new_line = "<"+ln+">"+eng_line
                     else:
-                        en_f.write(jp_scriptline)
-                        print(jp_scriptline)
+                        new_line = jp_scriptline.rstrip()
 
-                    #en_f.write(eng_newline)
-                    #idx += 1
+                    en_f.write(new_line+'\n')
+                    #print(new_line)
 
-                    #en_f.write()
-
-                    #jp_scriptline = jp_f.readline().strip()
-
-                    #    if prefix != None:
-                    #        new_eng = translation[idx][1]
-                    #        en_f.write(prefix + new_eng)
-                    #        idx += 1
-                    #        en_f.write("\n")
-
-
-                    # if 'ruby' in jp_scriptline:
-                    #     next_line = jp_f.readline()
-                    #     endruby = jp_f.readline()
-                    #     next_next_line = jp_f.readline()
-                    #     jp_scriptline = next_line[:-3] + next_next_line[1:]
-                    # if 'name' in jp_scriptline and '？？？' not in jp_scriptline:
-                    #     m = re.search(r'^name={name="(.*)"},$', jp_scriptline)
-                    #     name = m.group(1)
-                    #     eng_line = 'name={{name="{}"}},\n'.format(name_dict[name])
-                    #     en_f.write(eng_line)
-                    #     continue
-                    # m = re.search(r'^"(.*)",$', jp_scriptline)
-
-                    #m = re.search(r'(.*?>)([^a-zA-Z].*)', jp_scriptline)
-                    # if m.group(2) is not None:
-                    #if m is not None:
-                    #    jp_line = m.group(2)
-                    #    if jp_line not in name_dict.keys() and '#FFFFFF' not in jp_line and '6sakura' not in jp_line:  # TODO: Fix
-                    #        check_jp_line, new_eng_line = translation[idx]
-                    #        new_eng_line = '{}: {}'.format(str(idx + 1), new_eng_line)  # For debugging
-                    #        idx += 1
-                    #        try:
-                    #            assert jp_line == check_jp_line
-                    #        except:
-                    #            print(check_jp_line)
-                    #            print(jp_line)
-                    #            #1/0
-                    #        eng_line = '{}{}\n'.format(m.group(1), new_eng_line)
-                    #        en_f.write(eng_line)
-                    #    if jp_line in name_dict.keys():
-                    #        eng_line = '{}{}\n'.format(m.group(1), name_dict[m.group(2)])
-                    #        en_f.write(eng_line)
-                    #else:
-                    #    en_f.write(jp_scriptline)
-
-                    # try:
-                    #     eng_line = '"{}",\n'.format(translation[m.group(1)])
-                    #     en_f.write(eng_line)
-                    #     # print('Replaced {} with {}'.format(scriptline, eng_line))
-                    # except AttributeError:
-                    #     en_f.write(jp_scriptline)
-
+                    line_num+=1
+                    jp_scriptline = jp_f.readline()
 
 if __name__ == '__main__':
 
@@ -233,4 +177,3 @@ if __name__ == '__main__':
         create_translation_csv(outname=args.make_csv)
     if args.make_translation_scripts:
         create_translation_scripts()
-    # print_names()
