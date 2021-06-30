@@ -2,19 +2,20 @@ encoded_scripts/*
 raw_scripts/*
 txt_scripts_en/*
 txt_scripts_jp/*
+
 !encoded_scripts/.gitkeep
 !raw_scripts/.gitkeep
 !txt_scripts_en/.gitkeep
 !txt_scripts_jp/.gitkeep
 
-AE.lnk
-files.json
-translation.csv
-eng_script.xlsx
-
 BurikoConverter/Output-Build.txt
 BurikoConverter/.vs/
 BurikoConverter/BurikoConverter/obj/
 BurikoConverter/BurikoConverter/bin/
-
 BurikoConverter/BurikoConverter/BurikoConverter.csproj.user
+
+AE.lnk
+files.json
+translation.csv
+eng_script.xlsx
+cons.csv

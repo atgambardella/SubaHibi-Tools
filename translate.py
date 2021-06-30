@@ -96,17 +96,16 @@ def create_translation_csv(outname=''):
     fnames = get_fnames()
     #fnames = sorted(fnames, key=sort_func)
     for fname in fnames:
+        print("Reading "+fname+"...")
         with open(fname, encoding='utf8') as f:
             scriptline = f.readline()
             while scriptline:
                 scriptline = f.readline()
-                #re_line = re.sub(r'\<\d*\,\d*\,\d*\>', "", scriptline)
-                #true_line = re_line.rstrip()
+                re_line = re.sub(r'^\<\d*\>', "", scriptline)
+                re_line = re_line.rstrip()
 
-                new_line = scriptline.rstrip()
-                if new_line.lower() not in files:
-                    print(new_line)
-                    total_lines.append((new_line, fname))
+                if re_line.lower() not in files:
+                    total_lines.append((re_line, fname))
 
                 #m = re.search(r'.*?>([^a-zA-Z].*)', scriptline)
                 #if m is not None:
@@ -116,9 +115,11 @@ def create_translation_csv(outname=''):
     print('Total number of lines: {}'.format(len(total_lines)))
 
     with open(outname, 'w', encoding='utf8') as csvfile:
+        print("Writing lines...")
         csvwriter = csv.writer(csvfile)
         for line, fname in total_lines:
             csvwriter.writerow([line, line, fname])
+        print("Complete!")
 
 def create_translation_scripts():
     translation = []
