@@ -99,7 +99,7 @@ def create_translation_csv(outname=''):
         print("Reading "+str(fname)+"...")
         with open(fname, 'r', encoding='utf8') as f:
             scriptline = f.readline()
-            line_num = 1
+            line_num = 0
             while scriptline:
 
                 new_line = re.sub(r'^\<\d*\>', "", scriptline).rstrip()
@@ -124,45 +124,43 @@ def create_translation_csv(outname=''):
         print("Complete!")
 
 def create_translation_scripts():
-    translation = []
+    fnames = get_fnames()
+    translation = dict.fromkeys(fnames)
     with open('translation.csv', 'r', encoding='utf8') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
-            translation.append((row[0], row[1]))
+            translation[row[4]].append((row[2], row[3]))
 
-    fnames = get_fnames()
+
     #fnames = sorted(fnames, key=sort_func)
-    en_files = []
-    idx = 0
-    for fname in fnames:
-        print(fname)
-        prefix = ""
-        #outname = os.path.join('txt_scripts_en', fname.split('/')[1].split('.')[0] + '.txt')
+    #en_files = []
+    keys = list(translation.keys())
+    key_i = 0
+    for file in translation:
+        fname = keys[key_i]
         fshort = os.path.split(fname)[1]
         outname = os.path.join('txt_scripts_en', os.path.splitext(fshort)[0] + '.txt')
-        with open(outname, 'w', encoding='utf8') as en_f:
-            with open(fname, 'r', encoding='utf8') as jp_f:
+        for line, line_num in file:
+            with open(outname, 'w', encoding='utf8') as en_f:
+                with open(fname, 'r', encoding='utf8') as jp_f:
+                line_num = 0
                 jp_scriptline = jp_f.readline()
-                en_f.write(jp_scriptline)
                 while jp_scriptline:
-                    jp_scriptline = jp_f.readline()
-
-                    #jp_re_line = re.sub(r'\<\d*\,\d*\,\d*\>', "", jp_scriptline)
-                    jp_newline = jp_scriptline.rstrip()
-
-                    #p = re.search(r'\<\d*\,\d*\,\d*\>', jp_scriptline)
-                    #if p != None:
-                    #    prefix = p.group(0)
-                    #else:
-                    #    prefix = None
-
-                    if jp_newline.lower() in files:
-                        en_f.write(jp_newline)
+                    if jp_scriptline == line_num:
+                        line_num+=1
+                        prefix = re.match(r'\<\d*\>', jp_scriptline).group(0).rstrip()
+                        en_f.write(prefix+line)
+                        print(prefix+line)
                     else:
-                        eng_newline = translation[idx][1]
-                        en_f.write(eng_newline)
-                        idx += 1
-                    en_f.write("\n")
+                        en_f.write(jp_scriptline)
+                        print(jp_scriptline)
+
+                    #en_f.write(eng_newline)
+                    #idx += 1
+
+                    #en_f.write()
+
+                    #jp_scriptline = jp_f.readline().strip()
 
                     #    if prefix != None:
                     #        new_eng = translation[idx][1]
